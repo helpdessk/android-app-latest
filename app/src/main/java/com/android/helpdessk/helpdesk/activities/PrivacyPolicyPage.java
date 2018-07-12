@@ -1,5 +1,6 @@
 package com.android.helpdessk.helpdesk.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,8 @@ public class PrivacyPolicyPage extends AppCompatActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent i = new Intent(PrivacyPolicyPage.this,HomeScreenActivity.class);
+                startActivity(i);
                 Toast.makeText(PrivacyPolicyPage.this,"Accepted",Toast.LENGTH_SHORT).show();
             }
         });
