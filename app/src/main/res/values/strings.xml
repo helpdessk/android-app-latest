@@ -1,10 +1,29 @@
 <resources>
     <string name="app_name">Help Desk</string>
-    <string name="privacy_policy">This is the Privacy policy needed to be agreed before you go into the app.</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_title">Help Desk Dashboard</string>
+    <string name="nav_header_subtitle">info@helpdessk.com</string>
+    <string name="nav_header_desc">Help Desk header</string>
     <string name="action_settings">Settings</string>
+    <string name="privacy_policy">Scrollable TextView in android application, how to make android textview scroollable without using scrollview. Scrollable TextView in android application, how to make android textview scroollable without using scrollview. Scrollable TextView in android application, how to make android textview scroollable without using scrollview. Scrollable TextView in android application, how to make android textview scroollable without using scrollview. Scrollable TextView in android application, how to make android textview scroollable without using scrollview. Scrollable TextView in android application, how to make android textview scroollable without using scrollview. Scrollable TextView in android application, how to make android textview scroollable without using scrollview. Scrollable TextView in android application, how to make android textview scroollable without using scrollview. Scrollable TextView in android application, how to make android textview scroollable without using scrollview. Scrollable TextView in android application, how to make android textview scroollable without using scrollview. Scrollable TextView in android application, how to make android textview scroollable without using scrollview. Scrollable TextView in android application, how to make android textview scroollable without using scrollview. . </string>
+
+    <string name="title_activity_help_desk_home">HelpDeskHomeActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_help_desk_menu">HelpDeskMenuActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="text_launch_chat">LAUNCH Help Desk</string>
+    <string name="text_login_superhero1">LOGIN AS SUPERHERO1</string>
+    <string name="text_login_superhero2">LOGIN AS SUPERHERO2</string>
+    <string name="text_initialize_chat">INITIALIZE CHAT</string>
+
+
+    <string name="action_example">Example action</string>
+
+
+    <string name="title_activity_help_desk_navigation">HelpDeskNavigation</string>
+    <string name="title_activity_help_desk_nav">HelpDeskNavActivity</string>
 </resources>

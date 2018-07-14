@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -15,6 +17,14 @@ public class PrivacyPolicyPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.privacy_page);
+        //Get a reference to your WebView//
+        WebView webView = (WebView) findViewById(R.id.privacy_webview);
+
+        //Specify the URL you want to display//
+        webView.loadUrl("http://helpdessk.com/");
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
+
 
         Button acceptButton = findViewById(R.id.accept_button);
         acceptButton.setOnClickListener(new View.OnClickListener() {

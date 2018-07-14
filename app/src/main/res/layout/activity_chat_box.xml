@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="horizontal"
+tools:context=".activities.ChatBoxActivity">
+
+<ProgressBar
+    android:id="@+id/pb_loading"
+    style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:indeterminate="true"
+    android:visibility="gone" />
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/btnLoginSuperHero1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.45"
+            android:enabled="false"
+            android:text="@string/text_login_superhero1" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1" />
+
+        <Button
+            android:id="@+id/btnLoginSuperHero2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.45"
+            android:enabled="false"
+            android:text="@string/text_login_superhero2" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnInitialize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_login"
+        android:layout_margin="20dp"
+        android:text="@string/text_initialize_chat" />
+
+    <Button
+        android:id="@+id/btnLaunchChat"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_login"
+        android:layout_margin="20dp"
+        android:enabled="false"
+        android:text="@string/text_launch_chat" />
+
+
+</RelativeLayout>
+
+
+</LinearLayout>

@@ -19,6 +19,11 @@ allprojects {
     repositories {
         google()
         jcenter()
+        repositories {
+            maven{
+                url 'https://dl.bintray.com/cometchat/CometChat'
+            }
+        }
     }
 }
 

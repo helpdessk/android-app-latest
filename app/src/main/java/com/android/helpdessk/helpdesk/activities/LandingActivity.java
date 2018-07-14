@@ -15,8 +15,8 @@ public class LandingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.landing_screen);
 
-        Button agrementButton = findViewById(R.id.agrement_button);
-        agrementButton.setOnClickListener(new View.OnClickListener() {
+        Button agreementButton = findViewById(R.id.agreement_button);
+        agreementButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(LandingActivity.this, PrivacyPolicyPage.class);
