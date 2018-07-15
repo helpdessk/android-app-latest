@@ -32,7 +32,7 @@ public class PrivacyPolicyPage extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(PrivacyPolicyPage.this,HomeScreenActivity.class);
                 startActivity(i);
-                Toast.makeText(PrivacyPolicyPage.this,"Accepted",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(PrivacyPolicyPage.this,"Accepted",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -40,7 +40,7 @@ public class PrivacyPolicyPage extends AppCompatActivity {
         notAcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PrivacyPolicyPage.this,"Not Accepted",Toast.LENGTH_SHORT).show();
+                Toast.makeText(PrivacyPolicyPage.this,"Please Read and Click I Accept",Toast.LENGTH_SHORT).show();
             }
         });
 

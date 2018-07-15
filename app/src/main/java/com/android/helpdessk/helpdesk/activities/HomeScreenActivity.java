@@ -93,7 +93,7 @@ public class HomeScreenActivity extends AppCompatActivity
         if (id == R.id.nav_join_help_desk) {
             // Handle the camera action
             //fragment = new JoinHelpDesk();
-            Intent i = new Intent(HomeScreenActivity.this,ChatBoxActivity.class);
+            Intent i = new Intent(HomeScreenActivity.this,MainActivity.class);
             startActivity(i);
 
         } else if (id == R.id.nav_app_help) {
