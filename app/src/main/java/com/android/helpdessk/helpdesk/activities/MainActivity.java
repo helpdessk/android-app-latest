@@ -1,5 +1,6 @@
 package com.android.helpdessk.helpdesk.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -24,13 +26,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String licenseKey = "COMETCHAT-0YFFT-JC76D-9GE6Y-0ZBXL"; // Replace the value with your CometChat License Key here
     private String apiKey = "51202xf74431d527bc80bfcf0d142e4d5ba9f6"; // Replace the value with your CometChat Api Key here
-    private String UID1 = "SUPERHERO1";
+    private String UID1 = "Testing";
     private String UID2 = "SUPERHERO2";
     private boolean isCometOnDemand = true;
     private CometChat cometChat;
 
+    private String UID = "Testing3";  // Required
+    private String name = "Your Name Test3";  // Required
+    private String avatarURL = "";
+    private String profileURL = "";
+    private String role = "customer";
+    private Context context;
+
 
     private Button btnLoginSuperHero1, btnLoginSuperHero2, btnLaunchChat, btnInitializeChat;
+    private EditText textUserName, textFullName, textEmail, textPhone;
     private ProgressBar pbLoading;
 
 
@@ -40,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         cometChat = CometChat.getInstance(MainActivity.this);
         setUpFields();
+        initializeChat(); // Initialize chat on click
 
     }
 
@@ -47,22 +58,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnLoginSuperHero1 = findViewById(R.id.btnLoginSuperHero1);
         btnLoginSuperHero2 = findViewById(R.id.btnLoginSuperHero2);
         btnLaunchChat = findViewById(R.id.btnLaunchChat);
-        btnInitializeChat = findViewById(R.id.btnInitialize);
+        //btnShowChat = findViewById(R.id.btnShowChat);
+        //btnInitializeChat = findViewById(R.id.btnInitialize);
         pbLoading = findViewById(R.id.pb_loading);
         btnLoginSuperHero1.setOnClickListener(this);
         btnLoginSuperHero2.setOnClickListener(this);
         btnLaunchChat.setOnClickListener(this);
-        btnInitializeChat.setOnClickListener(this);
+        //btnShowChat.setOnClickListener(this);
+        //btnInitializeChat.setOnClickListener(this);
+        textUserName = findViewById(R.id.user_name);
+        textFullName = findViewById(R.id.user_full_name);
+        textEmail = findViewById(R.id.user_email);
+        textPhone = findViewById(R.id.user_phone);
+
 
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btnInitialize:
-                initializeChat();
-                break;
-
             case R.id.btnLoginSuperHero1:
                 login(UID1);
                 break;
@@ -72,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btnLaunchChat:
-                launchChat();
+                createUser();
         }
     }
 
@@ -90,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void successCallback(JSONObject jsonObject) {
                         Log.d(TAG, "Initialize Success : " + jsonObject.toString());
                         Toast.makeText(MainActivity.this, "CometChat initialized successfully", Toast.LENGTH_LONG).show();
-                        btnLoginSuperHero1.setEnabled(true);
-                        btnLoginSuperHero2.setEnabled(true);
+                        //btnLoginSuperHero1.setEnabled(true);
+                        //btnLoginSuperHero2.setEnabled(true);
                         showLoading(false);
                     }
 
@@ -124,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void successCallback(JSONObject jsonObject) {
                     Log.d(TAG, "Login Success : " + jsonObject.toString());
                     Toast.makeText(MainActivity.this, jsonObject.toString(), Toast.LENGTH_LONG).show();
-                    btnLaunchChat.setEnabled(true);
+                    //btnLaunchChat.setEnabled(true);
                     showLoading(false);
                 }
 
@@ -145,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      *  Launches the chat.
      */
     private void launchChat() {
+
+        boolean isFullScreen = true;
 
         cometChat.launchCometChat(MainActivity.this, true, new LaunchCallbacks() {
             @Override
@@ -188,6 +204,87 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+    }
+
+    private void createUser(){
+        cometChat.createUser(context,textUserName.getText().toString(),textFullName.getText().toString(),avatarURL,profileURL,role,new Callbacks() {
+            @Override
+            public void successCallback(JSONObject jsonObject) {
+                Log.d(TAG, "User Created : " + jsonObject.toString());
+                Toast.makeText(MainActivity.this, jsonObject.toString(), Toast.LENGTH_LONG).show();
+                //btnLaunchChat.setEnabled(true);
+                showLoading(false);
+                if (textUserName.getText().toString() != null && !TextUtils.isEmpty(textUserName.getText().toString())) {
+                    showLoading(true);
+                    cometChat.loginWithUID(MainActivity.this, textUserName.getText().toString(), new Callbacks() {
+                        @Override
+                        public void successCallback(JSONObject jsonObject) {
+                            Log.d(TAG, "Login Success : " + jsonObject.toString());
+                            Toast.makeText(MainActivity.this, jsonObject.toString(), Toast.LENGTH_LONG).show();
+                            //btnLaunchChat.setEnabled(true);
+                            showLoading(false);
+                        }
+
+                        @Override
+                        public void failCallback(JSONObject jsonObject) {
+                            Log.d(TAG, "Login Fail : " + jsonObject.toString());
+                            Toast.makeText(MainActivity.this, jsonObject.toString(), Toast.LENGTH_LONG).show();
+                            showLoading(false);
+                        }
+                    });
+                } else {
+                    Toast.makeText(MainActivity.this, "UID be null or empty", Toast.LENGTH_LONG).show();
+                }
+                cometChat.launchCometChat(MainActivity.this, true, new LaunchCallbacks() {
+                    @Override
+                    public void successCallback(JSONObject jsonObject) {
+                        Log.d(TAG, "Launch Success : " + jsonObject.toString());
+                    }
+
+                    @Override
+                    public void failCallback(JSONObject jsonObject) {
+                        Log.d(TAG, "Launch Fail : " + jsonObject.toString());
+                    }
+
+                    @Override
+                    public void userInfoCallback(JSONObject jsonObject) {
+                        Log.d(TAG, "User Info Received : " + jsonObject.toString());
+                    }
+
+                    @Override
+                    public void chatroomInfoCallback(JSONObject jsonObject) {
+                        Log.d(TAG, "Chatroom Info Received : " + jsonObject.toString());
+                    }
+
+                    @Override
+                    public void onMessageReceive(JSONObject jsonObject) {
+                        Log.d(TAG, "Message Received : " + jsonObject.toString());
+                    }
+
+                    @Override
+                    public void error(JSONObject jsonObject) {
+                        Log.d(TAG, "Error : " + jsonObject.toString());
+                    }
+
+                    @Override
+                    public void onWindowClose(JSONObject jsonObject) {
+                        Log.d(TAG, "Chat Window Closed : " + jsonObject.toString());
+                    }
+
+                    @Override
+                    public void onLogout() {
+                        Log.d(TAG, "Logout");
+                    }
+                });
+            }
+            @Override
+            public void failCallback(JSONObject jsonObject) {
+                Log.d(TAG, "Failed to create User  : " + jsonObject.toString());
+                Toast.makeText(MainActivity.this, jsonObject.toString(), Toast.LENGTH_LONG).show();
+                showLoading(false);
+
+            }
+        });
     }
 
     private void showLoading(boolean show) {
