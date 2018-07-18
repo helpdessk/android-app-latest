@@ -18,11 +18,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.android.helpdessk.helpdesk.R;
+import com.android.helpdessk.helpdesk.fragments.HomeScreenFragment;
+import com.android.helpdessk.helpdesk.fragments.RegistrationFragment;
 
 import rolebase.Home;
 
 public class HomeScreenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    Fragment mCurrentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +34,6 @@ public class HomeScreenActivity extends AppCompatActivity
         setContentView(R.layout.activity_home_screen);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -48,6 +43,10 @@ public class HomeScreenActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        if(mCurrentFragment == null){
+            mCurrentFragment = HomeScreenFragment.newInstance();
+        }
+        replaceFragment(mCurrentFragment);
     }
 
     @Override
@@ -91,10 +90,13 @@ public class HomeScreenActivity extends AppCompatActivity
         Fragment fragment = null;
 
         if (id == R.id.nav_join_help_desk) {
-            // Handle the camera action
-            //fragment = new JoinHelpDesk();
-            Intent i = new Intent(HomeScreenActivity.this,MainActivity.class);
-            startActivity(i);
+//
+            mCurrentFragment = RegistrationFragment.newInstance();
+            replaceFragment(mCurrentFragment);
+//            // Handle the camera action
+//            //fragment = new JoinHelpDesk();
+//            Intent i = new Intent(HomeScreenActivity.this,MainActivity.class);
+//            startActivity(i);
 
         } else if (id == R.id.nav_app_help) {
 
@@ -104,18 +106,21 @@ public class HomeScreenActivity extends AppCompatActivity
 
         }
 
-        if(fragment != null){
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
 
-            ft.replace(R.id.ButtonTest, fragment);
-
-            ft.commit();
-        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private void replaceFragment(Fragment fragment){
+        if(fragment != null){
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.fragment_container, fragment).addToBackStack(null);
+            ft.commit();
+        }
     }
 }
 

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.registration_layout);
         cometChat = CometChat.getInstance(MainActivity.this);
 
         pbLoading = findViewById(R.id.pb_loading);
