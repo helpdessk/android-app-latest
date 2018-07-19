@@ -1,6 +1,8 @@
 package com.android.helpdessk.helpdesk.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -13,20 +15,29 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.helpdessk.helpdesk.R;
 import com.android.helpdessk.helpdesk.fragments.HomeScreenFragment;
+import com.android.helpdessk.helpdesk.fragments.LoggedInFragment;
 import com.android.helpdessk.helpdesk.fragments.RegistrationFragment;
+import com.inscripts.interfaces.LaunchCallbacks;
+import com.inscripts.interfaces.SubscribeCallbacks;
 
+import org.json.JSONObject;
+
+import cometchat.inscripts.com.cometchatcore.coresdk.CometChat;
 import rolebase.Home;
 
 public class HomeScreenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Fragment mCurrentFragment;
+    private CometChat cometChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +100,25 @@ public class HomeScreenActivity extends AppCompatActivity
 
         Fragment fragment = null;
 
+        SharedPreferences sharedPreferences = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        String user = sharedPreferences.getString("username","");
+        String fullname = sharedPreferences.getString("fullname","");
+        String email = sharedPreferences.getString("email","");
+        String phone = sharedPreferences.getString("phone","");
+        Boolean loggedIn = sharedPreferences.getBoolean("loggedIn",false);
+
+
         if (id == R.id.nav_join_help_desk) {
-//
-            mCurrentFragment = RegistrationFragment.newInstance();
-            replaceFragment(mCurrentFragment);
+
+            if(loggedIn){
+                mCurrentFragment = LoggedInFragment.newInstance();
+                replaceFragment(mCurrentFragment);
+                Toast.makeText(HomeScreenActivity.this, user+" "+fullname+" "+email+" "+phone , Toast.LENGTH_LONG).show();
+            }else{
+                mCurrentFragment = RegistrationFragment.newInstance();
+                replaceFragment(mCurrentFragment);
+            }
+
 //            // Handle the camera action
 //            //fragment = new JoinHelpDesk();
 //            Intent i = new Intent(HomeScreenActivity.this,MainActivity.class);

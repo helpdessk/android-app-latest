@@ -15,14 +15,6 @@
         android:indeterminate="true"
         android:visibility="gone" />
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="200dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="100dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/main_logo"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
@@ -32,91 +24,58 @@
         android:layout_margin="20sp"
         android:layout_marginBottom="20sp">
 
-        <EditText
-            android:id="@+id/user_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="User Name" />
-        <EditText
-            android:id="@+id/user_full_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Full Name" />
-        <EditText
-            android:id="@+id/user_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textEmailAddress"
-            android:hint="Email" />
-        <EditText
-            android:id="@+id/user_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="phone"
-            android:hint="Phone Number" />
-
-        <Button
-            android:id="@+id/btnSetData"
-            style="@style/Widget.AppCompat.Button"
+        <TextView
+            android:id="@+id/logged_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center"
             android:layout_marginTop="10dp"
-            android:background="@drawable/signin_rect"
             android:gravity="center_horizontal"
             android:paddingBottom="12dp"
             android:paddingLeft="90dp"
             android:paddingRight="90dp"
             android:paddingTop="12dp"
-            android:textColor="#ffffff"
             android:textSize="16sp"
-
-            android:text="Set Data" />
-        <Button
-            android:id="@+id/btnGetData"
-            style="@style/Widget.AppCompat.Button"
+            android:text="User Name" />
+        <TextView
+            android:id="@+id/logged_full_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center"
             android:layout_marginTop="10dp"
-            android:background="@drawable/signin_rect"
             android:gravity="center_horizontal"
             android:paddingBottom="12dp"
             android:paddingLeft="90dp"
             android:paddingRight="90dp"
             android:paddingTop="12dp"
-            android:textColor="#ffffff"
             android:textSize="16sp"
-
-            android:text="Get data" />
-
-        <Button
-            android:id="@+id/btnLaunchChat"
-            style="@style/Widget.AppCompat.Button"
+            android:text="Full name" />
+        <TextView
+            android:id="@+id/logged_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center"
             android:layout_marginTop="10dp"
-            android:background="@drawable/signin_rect"
             android:gravity="center_horizontal"
             android:paddingBottom="12dp"
             android:paddingLeft="90dp"
             android:paddingRight="90dp"
             android:paddingTop="12dp"
-            android:textColor="#ffffff"
             android:textSize="16sp"
-            android:enabled="false"
-            android:text="@string/text_launch_chat" />
-
-
+            android:text="Email" />
+        <TextView
+            android:id="@+id/logged_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:paddingBottom="12dp"
+            android:paddingLeft="90dp"
+            android:paddingRight="90dp"
+            android:paddingTop="12dp"
+            android:textSize="16sp"
+            android:text="phone" />
 
 
     </LinearLayout>
