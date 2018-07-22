@@ -83,10 +83,24 @@ public class HomeScreenActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        SharedPreferences sharedPreferences = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        String user = sharedPreferences.getString("username","");
+        String fullname = sharedPreferences.getString("fullname","");
+        String email = sharedPreferences.getString("email","");
+        String phone = sharedPreferences.getString("phone","");
+        Boolean loggedIn = sharedPreferences.getBoolean("loggedIn",false);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         if(mCurrentFragment == null){
-            mCurrentFragment = HomeScreenFragment.newInstance();
+            if(loggedIn){
+                mCurrentFragment = LoggedInFragment.newInstance();
+                replaceFragment(mCurrentFragment);
+                Toast.makeText(HomeScreenActivity.this, user+" "+fullname+" "+email+" "+phone , Toast.LENGTH_LONG).show();
+            }else{
+                mCurrentFragment = RegistrationFragment.newInstance();
+                replaceFragment(mCurrentFragment);
+            }
         }
         replaceFragment(mCurrentFragment);
     }
@@ -161,8 +175,18 @@ public class HomeScreenActivity extends AppCompatActivity
             editor.clear();
             editor.apply();
             finish();
-            Intent i = new Intent(HomeScreenActivity.this, LandingActivity.class);
-            startActivity(i);
+            cometChat.logout(new Callbacks() {
+                @Override
+                public void successCallback(JSONObject response) {
+                    Toast.makeText(HomeScreenActivity.this, "Logged out", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(HomeScreenActivity.this, LandingActivity.class);
+                    startActivity(i);
+                }
+                @Override
+                public void failCallback(JSONObject response) {
+
+                }
+            });
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

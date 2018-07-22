@@ -77,6 +77,7 @@ public class LoggedInFragment extends Fragment {
         textLoggedFullName.setText(fullname);
         textLoggedEmail.setText(email);
         textLoggedPhone.setText(phone);
+        launchChat();
 
         return view;
     }
