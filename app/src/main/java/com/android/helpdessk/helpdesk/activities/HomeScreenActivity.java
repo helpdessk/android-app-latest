@@ -19,13 +19,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.helpdessk.helpdesk.R;
 import com.android.helpdessk.helpdesk.fragments.HomeScreenFragment;
 import com.android.helpdessk.helpdesk.fragments.LoggedInFragment;
 import com.android.helpdessk.helpdesk.fragments.RegistrationFragment;
+import com.inscripts.interfaces.Callbacks;
 import com.inscripts.interfaces.LaunchCallbacks;
 import com.inscripts.interfaces.SubscribeCallbacks;
 
@@ -38,7 +43,21 @@ public class HomeScreenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Fragment mCurrentFragment;
+    private static final String TAG = LoggedInFragment.class.getSimpleName();
+
+    private String licenseKey = "COMETCHAT-0YFFT-JC76D-9GE6Y-0ZBXL";
+    private String apiKey = "51202xf74431d527bc80bfcf0d142e4d5ba9f6";
+    private boolean isCometOnDemand = true;
     private CometChat cometChat;
+    private String avatarURL = "";
+    private String profileURL = "";
+    private String role = "customer";
+    private Context context;
+
+    private Button btnLaunchChat, btnInitializeChat, btnSetData, btnGetData;
+    private EditText textUserName, textFullName, textEmail, textPhone;
+    private TextView textLoggedUserName, textLoggedFullName, textLoggedEmail, textLoggedPhone;
+    private ProgressBar pbLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +65,8 @@ public class HomeScreenActivity extends AppCompatActivity
         setContentView(R.layout.activity_home_screen);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        cometChat = CometChat.getInstance(HomeScreenActivity.this);
+        initializeChat();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -110,7 +130,6 @@ public class HomeScreenActivity extends AppCompatActivity
 
 
         if (id == R.id.nav_join_help_desk) {
-
             if(loggedIn){
                 mCurrentFragment = LoggedInFragment.newInstance();
                 replaceFragment(mCurrentFragment);
@@ -120,26 +139,26 @@ public class HomeScreenActivity extends AppCompatActivity
                 replaceFragment(mCurrentFragment);
             }
 
-//            // Handle the camera action
-//            //fragment = new JoinHelpDesk();
-//            Intent i = new Intent(HomeScreenActivity.this,MainActivity.class);
-//            startActivity(i);
-
         } else if (id == R.id.nav_app_help) {
 
         } else if (id == R.id.nav_privacy_policy) {
 
         } else if (id == R.id.nav_support_us) {
 
+        }else if(id == R.id.nav_logout  ){
+            SharedPreferences preferences = getSharedPreferences("MyData",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.apply();
+            finish();
+            Intent i = new Intent(HomeScreenActivity.this, LandingActivity.class);
+            startActivity(i);
         }
-
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     private void replaceFragment(Fragment fragment){
         if(fragment != null){
@@ -148,6 +167,25 @@ public class HomeScreenActivity extends AppCompatActivity
             ft.replace(R.id.fragment_container, fragment).addToBackStack(null);
             ft.commit();
         }
+    }
+
+    private void initializeChat() {
+
+        cometChat.initializeCometChat("", licenseKey, apiKey, isCometOnDemand, new Callbacks() {
+            @Override
+            public void successCallback(JSONObject jsonObject) {
+                //Log.d(TAG, "Initialize Success : " + jsonObject.toString());
+                Toast.makeText(HomeScreenActivity.this, "CometChat initialized successfully", Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void failCallback(JSONObject jsonObject) {
+                Log.d(TAG, "Initialize Fail : " + jsonObject.toString());
+                Toast.makeText(HomeScreenActivity.this, "Initialize Failed with error: " + jsonObject.toString(), Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
 }
 

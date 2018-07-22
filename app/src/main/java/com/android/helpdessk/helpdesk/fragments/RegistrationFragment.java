@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +47,8 @@ public class RegistrationFragment extends Fragment {
     private Button btnLaunchChat, btnInitializeChat, btnSetData, btnGetData;
     private EditText textUserName, textFullName, textEmail, textPhone;
     private ProgressBar pbLoading;
+
+    Fragment mCurrentFragment;
     
     public static RegistrationFragment newInstance(){
         return new RegistrationFragment();
@@ -61,23 +65,19 @@ public class RegistrationFragment extends Fragment {
         View view = inflater.inflate(R.layout.registration_layout, container, false);
         cometChat = CometChat.getInstance(getActivity());
         pbLoading = view.findViewById(R.id.pb_loading);
-        btnLaunchChat = view.findViewById(R.id.btnLaunchChat);
-        btnSetData = view.findViewById(R.id.btnSetData);
-        btnGetData = view.findViewById(R.id.btnGetData);
-        initializeChat();
+        btnLaunchChat = view.findViewById(R.id.btnRegisterAndLaunch);
+        //btnSetData = view.findViewById(R.id.btnSetData);
+        //btnGetData = view.findViewById(R.id.btnGetData);
         btnLaunchChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 createUserAndLogin();
             }
         });
-        btnLaunchChat.setEnabled(false);
         textUserName = view.findViewById(R.id.user_name);
         textFullName = view.findViewById(R.id.user_full_name);
         textEmail = view.findViewById(R.id.user_email);
         textPhone = view.findViewById(R.id.user_phone);
-
-
         
         return view;
     }
@@ -96,7 +96,7 @@ public class RegistrationFragment extends Fragment {
                 Toast.makeText(getActivity(), jsonObject.toString(), Toast.LENGTH_LONG).show();
                 //btnLaunchChat.setEnabled(true);
                 showLoading(false);
-                if (textUserName.getText().toString() != null && !TextUtils.isEmpty(textUserName.getText().toString())) {
+                if (!TextUtils.isEmpty(textUserName.getText().toString())) {
                     showLoading(true);
                     cometChat.loginWithUID(getActivity(), textUserName.getText().toString(), new Callbacks() {
                         @Override
@@ -105,6 +105,11 @@ public class RegistrationFragment extends Fragment {
                             Toast.makeText(getActivity(), jsonObject.toString(), Toast.LENGTH_LONG).show();
                             //btnLaunchChat.setEnabled(true);
                             showLoading(false);
+                            LoggedInFragment loggedInFragment = new LoggedInFragment();
+                            FragmentManager manager = getFragmentManager();
+                            manager.beginTransaction()
+                            .replace(R.id.fragment_container, loggedInFragment,loggedInFragment.getTag())
+                                    .addToBackStack(null).commit();
                             launchChat();
                         }
 
@@ -145,30 +150,6 @@ public class RegistrationFragment extends Fragment {
                 getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             }
         }
-    }
-
-    private void initializeChat() {
-        showLoading(true);
-        cometChat.initializeCometChat("", licenseKey, apiKey, isCometOnDemand, new Callbacks() {
-            @Override
-            public void successCallback(JSONObject jsonObject) {
-                //Log.d(TAG, "Initialize Success : " + jsonObject.toString());
-                if (isAdded() && getActivity() != null) {
-                    Toast.makeText(getActivity(), "CometChat initialized successfully", Toast.LENGTH_LONG).show();
-                    showLoading(false);
-                    btnLaunchChat.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void failCallback(JSONObject jsonObject) {
-                if (isAdded() && getActivity() != null) {
-                    Log.d(TAG, "Initialize Fail : " + jsonObject.toString());
-                    Toast.makeText(getActivity(), "Initialize Failed with error: " + jsonObject.toString(), Toast.LENGTH_LONG).show();
-                    showLoading(false);
-                }
-            }
-        });
     }
 
     private void login(String UID) {

@@ -84,7 +84,6 @@ public class LoggedInFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initializeChat();
     }
 
 
@@ -102,31 +101,6 @@ public class LoggedInFragment extends Fragment {
             }
         }
     }
-
-    private void initializeChat() {
-        showLoading(true);
-        cometChat.initializeCometChat("", licenseKey, apiKey, isCometOnDemand, new Callbacks() {
-            @Override
-            public void successCallback(JSONObject jsonObject) {
-                //Log.d(TAG, "Initialize Success : " + jsonObject.toString());
-                if (isAdded() && getActivity() != null) {
-                    Toast.makeText(getActivity(), "CometChat initialized successfully", Toast.LENGTH_LONG).show();
-                    showLoading(false);
-                    launchChat();
-                }
-            }
-
-            @Override
-            public void failCallback(JSONObject jsonObject) {
-                if (isAdded() && getActivity() != null) {
-                    Log.d(TAG, "Initialize Fail : " + jsonObject.toString());
-                    Toast.makeText(getActivity(), "Initialize Failed with error: " + jsonObject.toString(), Toast.LENGTH_LONG).show();
-                    showLoading(false);
-                }
-            }
-        });
-    }
-
     /**
      *  Launches the chat.
      */

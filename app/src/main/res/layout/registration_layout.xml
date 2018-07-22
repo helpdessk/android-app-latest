@@ -140,65 +140,27 @@
                             android:hint="Phone Number" />
                 </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/btnSetData"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/signin_rect"
-            android:gravity="center_horizontal"
-            android:paddingBottom="12dp"
-            android:paddingLeft="90dp"
-            android:paddingRight="90dp"
-            android:paddingTop="12dp"
-            android:textColor="#ffffff"
-            android:textSize="16sp"
+                <Button
+                    android:id="@+id/btnRegisterAndLaunch"
+                    style="@style/Widget.AppCompat.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/signin_rect"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="90dp"
+                    android:paddingRight="90dp"
+                    android:paddingTop="12dp"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:text="@string/text_launch_chat" />
 
-            android:text="Set Data" />
-        <Button
-            android:id="@+id/btnGetData"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/signin_rect"
-            android:gravity="center_horizontal"
-            android:paddingBottom="12dp"
-            android:paddingLeft="90dp"
-            android:paddingRight="90dp"
-            android:paddingTop="12dp"
-            android:textColor="#ffffff"
-            android:textSize="16sp"
-
-            android:text="Get data" />
-
-        <Button
-            android:id="@+id/btnLaunchChat"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/signin_rect"
-            android:gravity="center_horizontal"
-            android:paddingBottom="12dp"
-            android:paddingLeft="90dp"
-            android:paddingRight="90dp"
-            android:paddingTop="12dp"
-            android:textColor="#ffffff"
-            android:textSize="16sp"
-            android:enabled="false"
-            android:text="@string/text_launch_chat" />
-
-
-
-
-    </LinearLayout>
+            </LinearLayout>
 
         </RelativeLayout>
+
     </ScrollView>
 
 
