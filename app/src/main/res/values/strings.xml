@@ -10,7 +10,7 @@
 
     <string name="title_activity_help_desk_home">HelpDeskHomeActivity</string>
     <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="dummy_content">DUMMY CONTENT</string>
     <string name="title_activity_help_desk_menu">HelpDeskMenuActivity</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
@@ -33,4 +33,41 @@
     <string name="password_text">Password</string>
     <string name="attempts_text">Attempts :</string>
     <string name="button_login">Login</string>
+
+
+    <string name="cat_prompt">Choose a category</string>
+    <string-array name="categories_array">
+        <item>Choose a category</item>
+        <item>Classified</item>
+        <item>Attorneys</item>
+        <item>Doctors</item>
+        <item>Hyderabadis</item>
+        <item>Professionals</item>
+        <item>Advertisements</item>
+    </string-array>
+
+    <string name="country_prompt">Choose a country</string>
+    <string-array name="countries_array">
+        <item>Choose a country</item>
+        <item>USA</item>
+        <item>India</item>
+        <item>UK</item>
+        <item>Canada</item>
+        <item>Australia</item>
+        <item>Dubai</item>
+        <item>Qatar</item>
+        <item>Kuwait</item>
+        <item>Saudi</item>
+    </string-array>
+
+    <string name="usa_states_prompt">Choose a state</string>
+    <string-array name="usa_states_array">
+        <item>Choose a state</item>
+        <item>NJ</item>
+        <item>NY</item>
+        <item>AZ</item>
+        <item>TX</item>
+        <item>FL</item>
+    </string-array>
+
 </resources>
