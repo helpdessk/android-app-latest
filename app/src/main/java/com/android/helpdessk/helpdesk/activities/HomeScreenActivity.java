@@ -67,6 +67,16 @@ public class HomeScreenActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         cometChat = CometChat.getInstance(HomeScreenActivity.this);
         initializeChat();
+
+        FloatingActionButton fab = findViewById(R.id.home_launch_chat);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchChat();
+            }
+        });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -174,7 +184,7 @@ public class HomeScreenActivity extends AppCompatActivity
         cometChat.initializeCometChat("", licenseKey, apiKey, isCometOnDemand, new Callbacks() {
             @Override
             public void successCallback(JSONObject jsonObject) {
-                //Log.d(TAG, "Initialize Success : " + jsonObject.toString());
+                Log.d(TAG, "Initialize Success : " + jsonObject.toString());
                 Toast.makeText(HomeScreenActivity.this, "CometChat initialized successfully", Toast.LENGTH_LONG).show();
 
             }
@@ -186,6 +196,52 @@ public class HomeScreenActivity extends AppCompatActivity
 
             }
         });
+    }
+
+    private void launchChat() {
+
+        cometChat.launchCometChat(HomeScreenActivity.this, false, new LaunchCallbacks() {
+            @Override
+            public void successCallback(JSONObject jsonObject) {
+                Log.d(TAG, "Launch Success : " + jsonObject.toString());
+            }
+
+            @Override
+            public void failCallback(JSONObject jsonObject) {
+                Log.d(TAG, "Launch Fail : " + jsonObject.toString());
+            }
+
+            @Override
+            public void userInfoCallback(JSONObject jsonObject) {
+                Log.d(TAG, "User Info Received : " + jsonObject.toString());
+            }
+
+            @Override
+            public void chatroomInfoCallback(JSONObject jsonObject) {
+                Log.d(TAG, "Chatroom Info Received : " + jsonObject.toString());
+            }
+
+            @Override
+            public void onMessageReceive(JSONObject jsonObject) {
+                Log.d(TAG, "Message Received : " + jsonObject.toString());
+            }
+
+            @Override
+            public void error(JSONObject jsonObject) {
+                Log.d(TAG, "Error : " + jsonObject.toString());
+            }
+
+            @Override
+            public void onWindowClose(JSONObject jsonObject) {
+                Log.d(TAG, "Chat Window Closed : " + jsonObject.toString());
+            }
+
+            @Override
+            public void onLogout() {
+                Log.d(TAG, "Logout");
+            }
+        });
+
     }
 }
 
