@@ -15,22 +15,29 @@ public class LandingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.landing_screen);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
-        String user = sharedPreferences.getString("username","");
-        String fullname = sharedPreferences.getString("fullname","");
-        String email = sharedPreferences.getString("email","");
-        String phone = sharedPreferences.getString("phone","");
-        boolean acceptAgreement = sharedPreferences.getBoolean("acceptAgreement", false);
-        Toast.makeText(LandingActivity.this, user+" "+fullname+" "+email+" "+phone +"accept"+acceptAgreement, Toast.LENGTH_LONG).show();
 
-        if(!acceptAgreement) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+          SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+//        String user = sharedPreferences.getString("username","");
+//        String fullname = sharedPreferences.getString("fullname","");
+//        String email = sharedPreferences.getString("email","");
+//        String phone = sharedPreferences.getString("phone","");
+        Boolean loggedIn = sharedPreferences.getBoolean("loggedIn",false);
 
-            editor.putBoolean("activated", true);
-            editor.apply();
-
+        if(loggedIn){
+            Toast.makeText(LandingActivity.this, "Logged In" , Toast.LENGTH_LONG).show();
+            //setContentView(R.layout.privacy_page);
+            setContentView(R.layout.landing_screen);
+            Button agreementButton = findViewById(R.id.agreement_button);
+            agreementButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(LandingActivity.this, PrivacyPolicyPage.class);
+                    startActivity(i);
+                }
+            });
+        }else{
+            setContentView(R.layout.landing_screen);
             Button agreementButton = findViewById(R.id.agreement_button);
             agreementButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -40,6 +47,5 @@ public class LandingActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
 }

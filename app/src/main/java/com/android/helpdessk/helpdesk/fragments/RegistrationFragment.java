@@ -64,6 +64,7 @@ public class RegistrationFragment extends Fragment {
         btnLaunchChat = view.findViewById(R.id.btnLaunchChat);
         btnSetData = view.findViewById(R.id.btnSetData);
         btnGetData = view.findViewById(R.id.btnGetData);
+        initializeChat();
         btnLaunchChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,7 +85,6 @@ public class RegistrationFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initializeChat();
     }
 
 

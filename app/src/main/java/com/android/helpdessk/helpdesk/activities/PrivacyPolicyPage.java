@@ -42,8 +42,8 @@ public class PrivacyPolicyPage extends AppCompatActivity {
             public void onClick(View view) {
                 SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.apply();
                 editor.putBoolean("acceptAgreement",true);
+                editor.apply();
                 Intent i = new Intent(PrivacyPolicyPage.this,HomeScreenActivity.class);
                 startActivity(i);
             }
