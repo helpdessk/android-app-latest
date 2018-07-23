@@ -45,6 +45,14 @@ public class LoggedInFragment extends Fragment {
     private String role = "customer";
     private Context context;
 
+    private String spCategory;
+    private String spCountry;
+    private String spState;
+
+    private Spinner categorySpinner;
+    private Spinner countrySpinner;
+    private Spinner usaStateSpinner;
+
     private Button btnLaunchChat, btnInitializeChat, btnSetData, btnGetData;
     private EditText textUserName, textFullName, textEmail, textPhone;
     private TextView textLoggedUserName, textLoggedFullName, textLoggedEmail, textLoggedPhone;
@@ -68,42 +76,60 @@ public class LoggedInFragment extends Fragment {
 
         /* Search Code */
 
-        Spinner categorySpinner = (Spinner) view.findViewById(R.id.category);
+        categorySpinner = (Spinner) view.findViewById(R.id.category);
         ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(
                 getActivity(), R.array.categories_array, android.R.layout.simple_spinner_item);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
-        categorySpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+        //categorySpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
 
-        Button myButton =(Button) view.findViewById(R.id.search_launch_chat);
-        myButton.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-
-                Spinner sp =	(Spinner) v.findViewById(R.id.category);
-                String spinnerString = null;
-                spinnerString = sp.getSelectedItem().toString();
-                int nPos = sp.getSelectedItemPosition();
-
-                Toast.makeText(getActivity(), "getSelectedItem=" + spinnerString,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), "getSelectedItemPosition=" + nPos,
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-
-        Spinner countrySpinner = (Spinner) view.findViewById(R.id.country);
+        countrySpinner = (Spinner) view.findViewById(R.id.country);
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(
                 getActivity(), R.array.countries_array, android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         countrySpinner.setAdapter(countryAdapter);
-        countrySpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+        //countrySpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
 
-        Spinner usaStateSpinner = (Spinner) view.findViewById(R.id.state);
+        usaStateSpinner = (Spinner) view.findViewById(R.id.state);
         ArrayAdapter<CharSequence> usaStateAdapter = ArrayAdapter.createFromResource(
                 getActivity(), R.array.usa_states_array, android.R.layout.simple_spinner_item);
         usaStateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         usaStateSpinner.setAdapter(usaStateAdapter);
-        usaStateSpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+        //usaStateSpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+
+        spCategory = categorySpinner.getSelectedItem().toString();
+
+        Button myButton =(Button) view.findViewById(R.id.search_launch_chat);
+
+        myButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                usaStateSpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+
+                Toast.makeText(getActivity(), "Category=" + spCategory,
+                        Toast.LENGTH_LONG).show();
+
+//                Spinner spCategory =	(Spinner) v.findViewById(R.id.category);
+//                Spinner spCountry =	(Spinner) v.findViewById(R.id.country);
+//                Spinner spState =	(Spinner) v.findViewById(R.id.state);
+////                String text = spCategory.getSelectedItem().toString();
+//
+//                Toast.makeText(getActivity(), "" + spCategory.getSelectedItem(), Toast.LENGTH_LONG).show();
+//
+////                Toast.makeText(getActivity(), "Test=" + text,
+////                        Toast.LENGTH_LONG).show();
+//
+////                String spinnerCatString = null;
+////                spinnerCatString = spCategory.getSelectedItem().toString();
+////                int nPos = spCategory.getSelectedItemPosition();
+////
+////                Toast.makeText(getActivity(), "getSelectedItem=" + spinnerCatString,
+////                        Toast.LENGTH_LONG).show();
+////                Toast.makeText(getActivity(), "getSelectedItemPosition=" + nPos,
+////                        Toast.LENGTH_LONG).show();
+            }
+        });
 
         /* Search Code */
 
@@ -278,7 +304,7 @@ public class LoggedInFragment extends Fragment {
 //        });
 //    }
 
-    public  class MyOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+    public class MyOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent,
                                    View view, int pos, long id) {

@@ -23,7 +23,7 @@ public class PrivacyPolicyPage extends AppCompatActivity {
         WebView webView = (WebView) findViewById(R.id.privacy_webview);
 
         //Specify the URL you want to display//
-        webView.loadUrl("http://helpdessk.com/");
+        webView.loadUrl("https://helpdessk.com/privacy-policy/");
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
 

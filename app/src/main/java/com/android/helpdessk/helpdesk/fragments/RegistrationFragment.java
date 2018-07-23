@@ -110,7 +110,7 @@ public class RegistrationFragment extends Fragment {
                             manager.beginTransaction()
                             .replace(R.id.fragment_container, loggedInFragment,loggedInFragment.getTag())
                                     .addToBackStack(null).commit();
-                            launchChat();
+//                            launchChat();
                         }
 
                         @Override
