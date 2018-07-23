@@ -17,10 +17,18 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.helpdessk.helpdesk.R;
 import com.android.helpdessk.helpdesk.activities.MainActivity;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.inscripts.interfaces.Callbacks;
 import com.inscripts.interfaces.LaunchCallbacks;
 import com.inscripts.interfaces.SubscribeCallbacks;
@@ -48,6 +56,8 @@ public class RegistrationFragment extends Fragment {
     private EditText textUserName, textFullName, textEmail, textPhone;
     private ProgressBar pbLoading;
 
+    private TextView mTextView;
+
     Fragment mCurrentFragment;
     
     public static RegistrationFragment newInstance(){
@@ -66,12 +76,14 @@ public class RegistrationFragment extends Fragment {
         cometChat = CometChat.getInstance(getActivity());
         pbLoading = view.findViewById(R.id.pb_loading);
         btnLaunchChat = view.findViewById(R.id.btnRegisterAndLaunch);
+        mTextView = (TextView) view.findViewById(R.id.wordpressResponse);
         //btnSetData = view.findViewById(R.id.btnSetData);
         //btnGetData = view.findViewById(R.id.btnGetData);
         btnLaunchChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 createUserAndLogin();
+                createUserInWordpress();
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyData", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("username",textUserName.getText().toString());
@@ -132,6 +144,44 @@ public class RegistrationFragment extends Fragment {
                     Toast.makeText(getActivity(), "UID be null or empty", Toast.LENGTH_LONG).show();
                 }
 
+                // Register Data in Wordpress
+
+                // Instantiate the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(getActivity());
+                String getnounceurl ="https://helpdessk.com/api/get_nonce/?controller=user&method=register";
+
+                // prepare the Request
+                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, getnounceurl, null,
+                        new Response.Listener<JSONObject>()
+                        {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                // display response
+                                JSONObject nonceValue = response;
+                                Log.d("Response", response.toString());
+                                String registerUser ="https://helpdessk.com/api/user/register/?insecure=cool&username="+ textUserName.getText().toString()
+                                        +"&email="+textEmail.getText().toString()
+                                        +"&nonce="+nonceValue.toString()
+                                        +"&display_name="+ textFullName.getText().toString()
+                                        +"&phone_number="+ textPhone.getText().toString()
+                                        +"&user_pass=Password";
+
+                            }
+                        },
+                        new Response.ErrorListener()
+                        {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", error.toString());
+                            }
+                        }
+                );
+
+                // add it to the RequestQueue
+                queue.add(getRequest);
+
+                // Register Data in Wordpress
+
             }
             @Override
             public void failCallback(JSONObject jsonObject) {
@@ -143,6 +193,35 @@ public class RegistrationFragment extends Fragment {
 
 
         });
+    }
+
+    private void createUserInWordpress(){
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        String getnounceurl ="https://helpdessk.com/api/get_nonce/?controller=user&method=register";
+
+        // prepare the Request
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, getnounceurl, null,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // display response
+                        Log.d("Response", response.toString());
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        );
+
+        // add it to the RequestQueue
+        queue.add(getRequest);
     }
 
     private void showLoading(boolean show) {
