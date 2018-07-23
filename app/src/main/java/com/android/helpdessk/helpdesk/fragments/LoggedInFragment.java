@@ -22,6 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.android.helpdessk.helpdesk.R;
 import com.inscripts.interfaces.Callbacks;
@@ -53,7 +56,7 @@ public class LoggedInFragment extends Fragment {
     private Spinner countrySpinner;
     private Spinner usaStateSpinner;
 
-    private Button btnLaunchChat, btnInitializeChat, btnSetData, btnGetData;
+    private Button btnLaunchChat, btnInitializeChat, btnSetData, btnGetData, btnDirectLaunchCaht;
     private EditText textUserName, textFullName, textEmail, textPhone;
     private TextView textLoggedUserName, textLoggedFullName, textLoggedEmail, textLoggedPhone;
     private ProgressBar pbLoading;
@@ -73,6 +76,16 @@ public class LoggedInFragment extends Fragment {
         View view = inflater.inflate(R.layout.logged_in_layout, container, false);
         cometChat = CometChat.getInstance(getActivity());
         pbLoading = view.findViewById(R.id.pb_loading);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        String user = sharedPreferences.getString("username","");
+        String fullname = sharedPreferences.getString("fullname","");
+        String email = sharedPreferences.getString("email","");
+        String phone = sharedPreferences.getString("phone","");
+
+        textLoggedUserName = view.findViewById(R.id.logged_user_name);
+
+        textLoggedUserName.setText("Welcome " +user);
 
         /* Search Code */
 
@@ -99,6 +112,15 @@ public class LoggedInFragment extends Fragment {
 
         spCategory = categorySpinner.getSelectedItem().toString();
 
+        btnDirectLaunchCaht = view.findViewById(R.id.logged_in_launch_chat);
+
+        btnDirectLaunchCaht.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchChat();
+            }
+        });
+
         Button myButton =(Button) view.findViewById(R.id.search_launch_chat);
 
         myButton.setOnClickListener(new Button.OnClickListener() {
@@ -109,43 +131,20 @@ public class LoggedInFragment extends Fragment {
 
                 Toast.makeText(getActivity(), "Category=" + spCategory,
                         Toast.LENGTH_LONG).show();
-
-//                Spinner spCategory =	(Spinner) v.findViewById(R.id.category);
-//                Spinner spCountry =	(Spinner) v.findViewById(R.id.country);
-//                Spinner spState =	(Spinner) v.findViewById(R.id.state);
-////                String text = spCategory.getSelectedItem().toString();
-//
-//                Toast.makeText(getActivity(), "" + spCategory.getSelectedItem(), Toast.LENGTH_LONG).show();
-//
-////                Toast.makeText(getActivity(), "Test=" + text,
-////                        Toast.LENGTH_LONG).show();
-//
-////                String spinnerCatString = null;
-////                spinnerCatString = spCategory.getSelectedItem().toString();
-////                int nPos = spCategory.getSelectedItemPosition();
-////
-////                Toast.makeText(getActivity(), "getSelectedItem=" + spinnerCatString,
-////                        Toast.LENGTH_LONG).show();
-////                Toast.makeText(getActivity(), "getSelectedItemPosition=" + nPos,
-////                        Toast.LENGTH_LONG).show();
             }
         });
 
         /* Search Code */
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        String user = sharedPreferences.getString("username","");
-        String fullname = sharedPreferences.getString("fullname","");
-        String email = sharedPreferences.getString("email","");
-        String phone = sharedPreferences.getString("phone","");
 
 
-        textLoggedUserName = view.findViewById(R.id.logged_user_name);
+
+
 //        textLoggedFullName = view.findViewById(R.id.logged_full_name);
 //        textLoggedEmail = view.findViewById(R.id.logged_email);
 //        textLoggedPhone = view.findViewById(R.id.logged_phone);
 
-        textLoggedUserName.setText("Welcome " +user);
+
 //        textLoggedFullName.setText(fullname);
 //        textLoggedEmail.setText(email);
 //        textLoggedPhone.setText(phone);
@@ -177,132 +176,132 @@ public class LoggedInFragment extends Fragment {
     /**
      *  Launches the chat.
      */
-//    private void launchChat() {
-//        boolean isFullScreen = false;
-//        cometChat.launchCometChat(getActivity(), isFullScreen, new LaunchCallbacks() {
-//            @Override
-//            public void successCallback(JSONObject jsonObject) {
-//                Log.d(TAG, "Launch Success : " + jsonObject.toString());
-//
-//            }
-//
-//            @Override
-//            public void failCallback(JSONObject jsonObject) {
-//                Log.d(TAG, "Launch Fail : " + jsonObject.toString());
-//            }
-//
-//            @Override
-//            public void userInfoCallback(JSONObject jsonObject) {
-//                Log.d(TAG, "User Info Received : " + jsonObject.toString());
-//            }
-//
-//            @Override
-//            public void chatroomInfoCallback(JSONObject jsonObject) {
-//                Log.d(TAG, "Chatroom Info Received : " + jsonObject.toString());
-//            }
-//
-//            @Override
-//            public void onMessageReceive(JSONObject jsonObject) {
-//                Log.d(TAG, "Message Received : " + jsonObject.toString());
-//            }
-//
-//            @Override
-//            public void error(JSONObject jsonObject) {
-//                Log.d(TAG, "Error : " + jsonObject.toString());
-//            }
-//
-//            @Override
-//            public void onWindowClose(JSONObject jsonObject) {
-//                Log.d(TAG, "Chat Window Closed : " + jsonObject.toString());
-//            }
-//
-//            @Override
-//            public void onLogout() {
-//                Log.d(TAG, "Logout");
-//            }
-//        });
-//        cometChat.subscribe(true, new SubscribeCallbacks() {
-//            @Override
-//            public void gotOnlineList(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void gotBotList(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void gotRecentChatsList(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void onError(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void onMessageReceived(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void gotProfileInfo(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void gotAnnouncement(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void onAVChatMessageReceived(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void onActionMessageReceived(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void onGroupMessageReceived(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void onGroupsError(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void onLeaveGroup(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void gotGroupList(JSONObject groupList) {
-//
-//            }
-//
-//            @Override
-//            public void gotGroupMembers(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void onGroupAVChatMessageReceived(JSONObject jsonObject) {
-//
-//            }
-//
-//            @Override
-//            public void onGroupActionMessageReceived(JSONObject jsonObject) {
-//
-//            }
-//        });
-//    }
+    private void launchChat() {
+        boolean isFullScreen = false;
+        cometChat.launchCometChat(getActivity(), isFullScreen, new LaunchCallbacks() {
+            @Override
+            public void successCallback(JSONObject jsonObject) {
+                Log.d(TAG, "Launch Success : " + jsonObject.toString());
+
+            }
+
+            @Override
+            public void failCallback(JSONObject jsonObject) {
+                Log.d(TAG, "Launch Fail : " + jsonObject.toString());
+            }
+
+            @Override
+            public void userInfoCallback(JSONObject jsonObject) {
+                Log.d(TAG, "User Info Received : " + jsonObject.toString());
+            }
+
+            @Override
+            public void chatroomInfoCallback(JSONObject jsonObject) {
+                Log.d(TAG, "Chatroom Info Received : " + jsonObject.toString());
+            }
+
+            @Override
+            public void onMessageReceive(JSONObject jsonObject) {
+                Log.d(TAG, "Message Received : " + jsonObject.toString());
+            }
+
+            @Override
+            public void error(JSONObject jsonObject) {
+                Log.d(TAG, "Error : " + jsonObject.toString());
+            }
+
+            @Override
+            public void onWindowClose(JSONObject jsonObject) {
+                Log.d(TAG, "Chat Window Closed : " + jsonObject.toString());
+            }
+
+            @Override
+            public void onLogout() {
+                Log.d(TAG, "Logout");
+            }
+        });
+        cometChat.subscribe(true, new SubscribeCallbacks() {
+            @Override
+            public void gotOnlineList(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void gotBotList(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void gotRecentChatsList(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void onError(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void onMessageReceived(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void gotProfileInfo(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void gotAnnouncement(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void onAVChatMessageReceived(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void onActionMessageReceived(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void onGroupMessageReceived(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void onGroupsError(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void onLeaveGroup(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void gotGroupList(JSONObject groupList) {
+
+            }
+
+            @Override
+            public void gotGroupMembers(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void onGroupAVChatMessageReceived(JSONObject jsonObject) {
+
+            }
+
+            @Override
+            public void onGroupActionMessageReceived(JSONObject jsonObject) {
+
+            }
+        });
+    }
 
     public class MyOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
 

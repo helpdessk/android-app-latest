@@ -72,6 +72,14 @@ public class RegistrationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 createUserAndLogin();
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyData", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("username",textUserName.getText().toString());
+                editor.putString("fullname",textFullName.getText().toString());
+                editor.putString("email",textEmail.getText().toString());
+                editor.putString("phone",textPhone.getText().toString());
+                editor.putBoolean("loggedIn",true);
+                editor.apply();
             }
         });
         textUserName = view.findViewById(R.id.user_name);
@@ -310,16 +318,6 @@ public class RegistrationFragment extends Fragment {
 
             }
         });
-
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("username",textUserName.getText().toString());
-        editor.putString("fullname",textFullName.getText().toString());
-        editor.putString("email",textEmail.getText().toString());
-        editor.putString("phone",textPhone.getText().toString());
-        editor.putBoolean("loggedIn",true);
-        editor.apply();
-
     }
 
     public void saveData(View v){

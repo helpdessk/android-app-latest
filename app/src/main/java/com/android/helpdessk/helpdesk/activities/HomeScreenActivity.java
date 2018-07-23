@@ -170,21 +170,21 @@ public class HomeScreenActivity extends AppCompatActivity
         } else if (id == R.id.nav_support_us) {
 
         }else if(id == R.id.nav_logout  ){
-            SharedPreferences preferences = getSharedPreferences("MyData",Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-            finish();
             cometChat.logout(new Callbacks() {
                 @Override
                 public void successCallback(JSONObject response) {
                     Toast.makeText(HomeScreenActivity.this, "Logged out", Toast.LENGTH_LONG).show();
+                    SharedPreferences preferences = getSharedPreferences("MyData",Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.clear();
+                    editor.apply();
+                    finish();
                     Intent i = new Intent(HomeScreenActivity.this, LandingActivity.class);
                     startActivity(i);
                 }
                 @Override
                 public void failCallback(JSONObject response) {
-
+                    Toast.makeText(HomeScreenActivity.this, "Failed to Logged out", Toast.LENGTH_LONG).show();
                 }
             });
         }
