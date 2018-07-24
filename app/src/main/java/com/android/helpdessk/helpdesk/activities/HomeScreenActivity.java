@@ -62,11 +62,11 @@ public class HomeScreenActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cometChat = CometChat.getInstance(HomeScreenActivity.this);
+        initializeChat();
         setContentView(R.layout.activity_home_screen);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        cometChat = CometChat.getInstance(HomeScreenActivity.this);
-        initializeChat();
 
         FloatingActionButton fab = findViewById(R.id.home_launch_chat);
 

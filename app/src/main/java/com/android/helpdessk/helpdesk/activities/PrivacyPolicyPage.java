@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -12,8 +14,19 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.helpdessk.helpdesk.R;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class PrivacyPolicyPage extends AppCompatActivity {
+
+    private RequestQueue privacyQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +49,8 @@ public class PrivacyPolicyPage extends AppCompatActivity {
         Toast.makeText(PrivacyPolicyPage.this, user+" "+fullname+" "+email+" "+phone , Toast.LENGTH_LONG).show();
 
 
+        privayPolicyContentWordpress();
+
         Button acceptButton = findViewById(R.id.accept_button);
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,5 +72,46 @@ public class PrivacyPolicyPage extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void privayPolicyContentWordpress(){
+
+        Toast.makeText(PrivacyPolicyPage.this,"Privacy policy call",Toast.LENGTH_SHORT).show();
+        // Get data for privacy policy
+
+        // Instantiate the RequestQueue.
+        privacyQueue = Volley.newRequestQueue(PrivacyPolicyPage.this);
+        String getprivacyPplicyurl ="https://helpdessk.com/wp-json/wp/v2/pages/4562";
+
+        // prepare the Request
+        JsonObjectRequest getPrivacyContent = new JsonObjectRequest(Request.Method.GET, getprivacyPplicyurl, null,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // display response
+                        try{
+                            JSONObject privacycontentParent = response.getJSONObject("content");
+                            String privacyHtml = privacycontentParent.getString("rendered");
+                            Log.d("WordPr Success Response", privacyHtml);
+                        }
+                        catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("WordPr Error.Response", error.toString());
+                    }
+                }
+        );
+
+        // add it to the RequestQueue
+        privacyQueue.add(getPrivacyContent);
+
+        // Register Data in Wordpress
     }
 }

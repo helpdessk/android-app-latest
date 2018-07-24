@@ -56,7 +56,11 @@ public class LoggedInFragment extends Fragment {
     private Spinner countrySpinner;
     private Spinner usaStateSpinner;
 
-    private Button btnLaunchChat, btnInitializeChat, btnSetData, btnGetData, btnDirectLaunchCaht;
+    private String catSelected;
+    private String ctrySelected;
+    private String usaStateSelected;
+
+    private Button btnLaunchChat, btnInitializeChat, btnSetData, btnGetData, btnDirectLaunchChat, btnSearchLaunchChat;
     private EditText textUserName, textFullName, textEmail, textPhone;
     private TextView textLoggedUserName, textLoggedFullName, textLoggedEmail, textLoggedPhone;
     private ProgressBar pbLoading;
@@ -94,51 +98,83 @@ public class LoggedInFragment extends Fragment {
                 getActivity(), R.array.categories_array, android.R.layout.simple_spinner_item);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
-        //categorySpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                catSelected = categorySpinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         countrySpinner = (Spinner) view.findViewById(R.id.country);
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(
                 getActivity(), R.array.countries_array, android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         countrySpinner.setAdapter(countryAdapter);
-        //countrySpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                ctrySelected = countrySpinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         usaStateSpinner = (Spinner) view.findViewById(R.id.state);
         ArrayAdapter<CharSequence> usaStateAdapter = ArrayAdapter.createFromResource(
                 getActivity(), R.array.usa_states_array, android.R.layout.simple_spinner_item);
         usaStateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         usaStateSpinner.setAdapter(usaStateAdapter);
-        //usaStateSpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+        usaStateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                usaStateSelected = usaStateSpinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         spCategory = categorySpinner.getSelectedItem().toString();
 
-        btnDirectLaunchCaht = view.findViewById(R.id.logged_in_launch_chat);
+        btnDirectLaunchChat = view.findViewById(R.id.logged_in_launch_chat);
 
-        btnDirectLaunchCaht.setOnClickListener(new Button.OnClickListener() {
+        btnDirectLaunchChat.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchChat();
             }
         });
 
-        Button myButton =(Button) view.findViewById(R.id.search_launch_chat);
+        btnSearchLaunchChat = view.findViewById(R.id.search_launch_chat);
 
-        myButton.setOnClickListener(new Button.OnClickListener() {
+        btnSearchLaunchChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("Selected items : ",catSelected + ctrySelected + usaStateSelected);
 
-                usaStateSpinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
-
-                Toast.makeText(getActivity(), "Category=" + spCategory,
+                Toast.makeText(getActivity(), "Selected Items=" + catSelected + ctrySelected + usaStateSelected,
                         Toast.LENGTH_LONG).show();
             }
         });
 
+
         /* Search Code */
-
-
-
-
 
 //        textLoggedFullName = view.findViewById(R.id.logged_full_name);
 //        textLoggedEmail = view.findViewById(R.id.logged_email);
