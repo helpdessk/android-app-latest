@@ -6,11 +6,13 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.helpdessk.helpdesk.R;
@@ -27,18 +29,19 @@ import org.json.JSONObject;
 public class PrivacyPolicyPage extends AppCompatActivity {
 
     private RequestQueue privacyQueue;
+    private TextView privacyPolicyHtml;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.privacy_page);
         //Get a reference to your WebView//
-        WebView webView = (WebView) findViewById(R.id.privacy_webview);
+//        WebView webView = (WebView) findViewById(R.id.privacy_webview);
 
         //Specify the URL you want to display//
-        webView.loadUrl("https://helpdessk.com/privacy-policy/");
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
+//        webView.loadUrl("https://helpdessk.com/privacy-policy/");
+//        webView.getSettings().setJavaScriptEnabled(true);
+//        webView.setWebViewClient(new WebViewClient());
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
         String user = sharedPreferences.getString("username","");
@@ -48,6 +51,7 @@ public class PrivacyPolicyPage extends AppCompatActivity {
 
         Toast.makeText(PrivacyPolicyPage.this, user+" "+fullname+" "+email+" "+phone , Toast.LENGTH_LONG).show();
 
+        privacyPolicyHtml = findViewById(R.id.privacy_policy_html);
 
         privayPolicyContentWordpress();
 
@@ -93,6 +97,10 @@ public class PrivacyPolicyPage extends AppCompatActivity {
                         try{
                             JSONObject privacycontentParent = response.getJSONObject("content");
                             String privacyHtml = privacycontentParent.getString("rendered");
+
+                            privacyPolicyHtml.setText(Html.fromHtml(privacyHtml));
+                            privacyPolicyHtml.setMovementMethod(new ScrollingMovementMethod());
+
                             Log.d("WordPr Success Response", privacyHtml);
                         }
                         catch(JSONException e) {

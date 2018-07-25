@@ -38,12 +38,12 @@
     <string name="cat_prompt">Choose a category</string>
     <string-array name="categories_array">
         <item name="">Choose a category</item>
-        <item name="CLF">Classified</item>
-        <item name="ÄTT">Attorneys</item>
-        <item name="DTR">Doctors</item>
-        <item name="HYD">Hyderabadis</item>
-        <item name="PRO">Professionals</item>
-        <item name="ADV">Advertisements</item>
+        <item>Classified</item>
+        <item>Attorneys</item>
+        <item>Doctors</item>
+        <item>Hyderabadis</item>
+        <item>Professionals</item>
+        <item>Advertisements</item>
     </string-array>
 
     <string name="country_prompt">Choose a country</string>
@@ -60,7 +60,7 @@
         <item>Saudi</item>
     </string-array>
 
-    <string name="usa_states_prompt">Choose a state</string>
+    <string name="states_prompt">Choose a state</string>
     <string-array name="usa_states_array">
         <item>Choose a state</item>
         <item>NJ</item>

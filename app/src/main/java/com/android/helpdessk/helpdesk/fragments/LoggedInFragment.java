@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,9 +58,11 @@ public class LoggedInFragment extends Fragment {
     private Spinner countrySpinner;
     private Spinner usaStateSpinner;
 
-    private String catSelected;
-    private String ctrySelected;
-    private String usaStateSelected;
+    private static String catSelected;
+    private static String ctrySelected;
+    private static String usaStateSelected;
+
+    private static String GroupName;
 
     private Button btnLaunchChat, btnInitializeChat, btnSetData, btnGetData, btnDirectLaunchChat, btnSearchLaunchChat;
     private EditText textUserName, textFullName, textEmail, textPhone;
@@ -150,7 +154,7 @@ public class LoggedInFragment extends Fragment {
             }
         });
 
-        spCategory = categorySpinner.getSelectedItem().toString();
+//        spCategory = categorySpinner.getSelectedItem().toString();
 
         btnDirectLaunchChat = view.findViewById(R.id.logged_in_launch_chat);
 
@@ -168,7 +172,26 @@ public class LoggedInFragment extends Fragment {
             public void onClick(View v) {
                 Log.e("Selected items : ",catSelected + ctrySelected + usaStateSelected);
 
-                Toast.makeText(getActivity(), "Selected Items=" + catSelected + ctrySelected + usaStateSelected,
+                GroupName = catSelected + ' ' + ctrySelected + ' ' + usaStateSelected;
+
+                String SearchGroup = catSelected.toUpperCase().substring(0,3) + ctrySelected.toUpperCase().substring(0,3) + usaStateSelected.toUpperCase().substring(0,2);
+
+                Toast.makeText(getActivity(), "Computed Group name" + SearchGroup,
+                        Toast.LENGTH_LONG).show();
+
+                cometChat.joinGroup(SearchGroup, GroupName, "", new Callbacks(){
+                    @Override
+                    public void successCallback(JSONObject response){
+                        Log.e("Joined Group : ",response.toString());
+                        Toast.makeText(getActivity(), "Joined Group",
+                                Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void failCallback(JSONObject response){ /* Code Block */ }
+                });
+
+                Toast.makeText(getActivity(), "Selected Items=" + SearchGroup,
                         Toast.LENGTH_LONG).show();
             }
         });

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,73 +7,57 @@
     android:background="@android:color/white"
     tools:context=".activities.PrivacyPolicyPage">
 
-    <ScrollView android:id="@+id/scrollviewParentLoginContainer"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:wheel="http://schemas.android.com/apk/res-auto"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="400sp"
+        android:scrollbars = "vertical"
+        android:id="@+id/privacy_policy_html"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color_white"
-        android:fillViewport="true"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="vertical"
+        android:layout_marginTop="0sp"
+        android:layout_marginBottom="20sp"
+        android:layout_below="@+id/privacy_webview"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_height="match_parent">
+        <Button
+            android:id="@+id/not_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:background="@drawable/signin_rect"
+            android:gravity="center_horizontal"
+            android:paddingBottom="12dp"
+            android:paddingLeft="90dp"
+            android:paddingRight="90dp"
+            android:paddingTop="12dp"
+            android:text="I Don't Accept"
+            android:textColor="#ffffff"
+            android:textSize="16sp"/>
 
-            <WebView
-                android:id="@+id/privacy_webview"
-                android:layout_width="match_parent"
-                android:layout_height="500dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_below="@+id/privacy_webview"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="50dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp">
-
-                <Button
-                    android:id="@+id/not_accept"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center"
-                    android:background="@drawable/signin_rect"
-                    android:gravity="center_horizontal"
-                    android:paddingBottom="12dp"
-                    android:paddingLeft="90dp"
-                    android:paddingRight="90dp"
-                    android:paddingTop="12dp"
-                    android:text="I Don't Accept"
-                    android:textColor="#ffffff"
-                    android:textSize="16sp"/>
-
-                <Button
-                    android:id="@+id/accept_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center"
-                    android:layout_marginTop="20sp"
-                    android:background="@drawable/signin_rect"
-                    android:gravity="center_horizontal"
-                    android:paddingBottom="0dp"
-                    android:paddingLeft="90dp"
-                    android:paddingRight="90dp"
-                    android:paddingTop="12dp"
-                    android:text="I Accept"
-                    android:textColor="#ffffff"
-                    android:textSize="16sp"/>
-            </LinearLayout>
-
-        </RelativeLayout>
-    </ScrollView>
+        <Button
+            android:id="@+id/accept_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginTop="20sp"
+            android:background="@drawable/signin_rect"
+            android:gravity="center_horizontal"
+            android:paddingBottom="0dp"
+            android:paddingLeft="90dp"
+            android:paddingRight="90dp"
+            android:paddingTop="12dp"
+            android:text="I Accept"
+            android:textColor="#ffffff"
+            android:textSize="16sp"/>
+    </LinearLayout>
 
 
 
-</RelativeLayout>
+</LinearLayout>
