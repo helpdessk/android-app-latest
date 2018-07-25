@@ -34,6 +34,8 @@
     <string name="attempts_text">Attempts :</string>
     <string name="button_login">Login</string>
 
+    <string name="policy_accept">I Accept</string>
+    <string name="policy_decline">I Decline</string>
 
     <string name="cat_prompt">Choose a category</string>
     <string-array name="categories_array">

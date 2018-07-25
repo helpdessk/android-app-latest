@@ -30,6 +30,7 @@ public class PrivacyPolicyPage extends AppCompatActivity {
 
     private RequestQueue privacyQueue;
     private TextView privacyPolicyHtml;
+    private Button acceptButton, notAcceptButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,8 @@ public class PrivacyPolicyPage extends AppCompatActivity {
 
         privayPolicyContentWordpress();
 
-        Button acceptButton = findViewById(R.id.accept_button);
+        acceptButton = findViewById(R.id.accept_button);
+        //acceptButton.setEnabled(false);
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +70,8 @@ public class PrivacyPolicyPage extends AppCompatActivity {
             }
         });
 
-        Button notAcceptButton = findViewById(R.id.not_accept);
+        notAcceptButton = findViewById(R.id.not_accept);
+        //notAcceptButton.setEnabled(false);
         notAcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,6 +103,8 @@ public class PrivacyPolicyPage extends AppCompatActivity {
 
                             privacyPolicyHtml.setText(Html.fromHtml(privacyHtml));
                             privacyPolicyHtml.setMovementMethod(new ScrollingMovementMethod());
+                            //acceptButton.setEnabled(true);
+                            //notAcceptButton.setEnabled(true);
 
                             Log.d("WordPr Success Response", privacyHtml);
                         }
@@ -112,7 +117,10 @@ public class PrivacyPolicyPage extends AppCompatActivity {
                 {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        // TO DO Add default content
                         Log.d("WordPr Error.Response", error.toString());
+                        //acceptButton.setEnabled(true);
+                        //notAcceptButton.setEnabled(true);
                     }
                 }
         );
