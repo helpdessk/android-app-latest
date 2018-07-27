@@ -3,6 +3,7 @@ package com.android.helpdessk.helpdesk.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -11,9 +12,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -27,9 +30,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.helpdessk.helpdesk.R;
+import com.android.helpdessk.helpdesk.fragments.AppHelpFragment;
+import com.android.helpdessk.helpdesk.fragments.ContactUsFragment;
+import com.android.helpdessk.helpdesk.fragments.DonateFragment;
 import com.android.helpdessk.helpdesk.fragments.HomeScreenFragment;
 import com.android.helpdessk.helpdesk.fragments.LoggedInFragment;
+import com.android.helpdessk.helpdesk.fragments.PrivacyPolicyFragment;
 import com.android.helpdessk.helpdesk.fragments.RegistrationFragment;
+import com.android.helpdessk.helpdesk.fragments.ReportABugFragment;
+import com.android.helpdessk.helpdesk.fragments.UserProfileFragment;
 import com.inscripts.interfaces.Callbacks;
 import com.inscripts.interfaces.LaunchCallbacks;
 import com.inscripts.interfaces.SubscribeCallbacks;
@@ -54,10 +63,12 @@ public class HomeScreenActivity extends AppCompatActivity
     private String role = "customer";
     private Context context;
 
+    private Boolean loggedIn;
     private Button btnLaunchChat, btnInitializeChat, btnSetData, btnGetData;
     private EditText textUserName, textFullName, textEmail, textPhone;
     private TextView textLoggedUserName, textLoggedFullName, textLoggedEmail, textLoggedPhone;
     private ProgressBar pbLoading;
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,20 +95,20 @@ public class HomeScreenActivity extends AppCompatActivity
         toggle.syncState();
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        String user = sharedPreferences.getString("username","");
-        String fullname = sharedPreferences.getString("fullname","");
-        String email = sharedPreferences.getString("email","");
-        String phone = sharedPreferences.getString("phone","");
-        Boolean loggedIn = sharedPreferences.getBoolean("loggedIn",false);
+        String user = sharedPreferences.getString("username", "");
+        String fullname = sharedPreferences.getString("fullname", "");
+        String email = sharedPreferences.getString("email", "");
+        String phone = sharedPreferences.getString("phone", "");
+        loggedIn = sharedPreferences.getBoolean("loggedIn", false);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        if(mCurrentFragment == null){
-            if(loggedIn){
+        if (mCurrentFragment == null) {
+            if (loggedIn) {
                 mCurrentFragment = LoggedInFragment.newInstance();
                 replaceFragment(mCurrentFragment);
-                Toast.makeText(HomeScreenActivity.this, user+" "+fullname+" "+email+" "+phone , Toast.LENGTH_LONG).show();
-            }else{
+                Toast.makeText(HomeScreenActivity.this, user + " " + fullname + " " + email + " " + phone, Toast.LENGTH_LONG).show();
+            } else {
                 mCurrentFragment = RegistrationFragment.newInstance();
                 replaceFragment(mCurrentFragment);
             }
@@ -119,7 +130,19 @@ public class HomeScreenActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home_screen, menu);
+
+        MenuItem share_app = menu.findItem(R.id.nav_share_app);
+
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(share_app);
+
         return true;
+    }
+
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 
     @Override
@@ -137,6 +160,21 @@ public class HomeScreenActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        if(Build.VERSION.SDK_INT > 11) {
+//            invalidateOptionsMenu();
+//            if(loggedIn){
+//                menu.findItem(R.id.nav_user_register).setVisible(false);
+//                menu.findItem(R.id.nav_user_helpdesk).setVisible(true);
+//            }else{
+//                menu.findItem(R.id.nav_user_register).setVisible(true);
+//                menu.findItem(R.id.nav_user_helpdesk).setVisible(false);
+//            }
+//        }
+//        return super.onPrepareOptionsMenu(menu);
+//    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -146,14 +184,58 @@ public class HomeScreenActivity extends AppCompatActivity
         Fragment fragment = null;
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        String user = sharedPreferences.getString("username","");
-        String fullname = sharedPreferences.getString("fullname","");
-        String email = sharedPreferences.getString("email","");
-        String phone = sharedPreferences.getString("phone","");
-        Boolean loggedIn = sharedPreferences.getBoolean("loggedIn",false);
+        String user = sharedPreferences.getString("username", "");
+        String fullname = sharedPreferences.getString("fullname", "");
+        String email = sharedPreferences.getString("email", "");
+        String phone = sharedPreferences.getString("phone", "");
+        Boolean loggedIn = sharedPreferences.getBoolean("loggedIn", false);
 
+        if (id == R.id.nav_user_register) {
+            mCurrentFragment = RegistrationFragment.newInstance();
+            replaceFragment(mCurrentFragment);
+        } else if (id == R.id.nav_user_helpdesk) {
+            mCurrentFragment = LoggedInFragment.newInstance();
+            replaceFragment(mCurrentFragment);
+        } else if (id == R.id.nav_user_profile) {
+            mCurrentFragment = UserProfileFragment.newInstance();
+            replaceFragment(mCurrentFragment);
+        } else if (id == R.id.nav_privacy_policy) {
+            mCurrentFragment = PrivacyPolicyFragment.newInstance();
+            replaceFragment(mCurrentFragment);
+            Toast.makeText(HomeScreenActivity.this, user + " " + fullname + " " + email + " " + phone, Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_contact_us) {
+            mCurrentFragment = ContactUsFragment.newInstance();
+            replaceFragment(mCurrentFragment);
+        } else if (id == R.id.nav_support_us) {
+            mCurrentFragment = DonateFragment.newInstance();
+            replaceFragment(mCurrentFragment);
+        } else if (id == R.id.nav_report) {
+            mCurrentFragment = ReportABugFragment.newInstance();
+            replaceFragment(mCurrentFragment);
+        } else if (id == R.id.nav_app_help) {
+            mCurrentFragment = AppHelpFragment.newInstance();
+            replaceFragment(mCurrentFragment);
 
-        if (id == R.id.nav_join_help_desk) {
+        } else if (id == R.id.nav_logout) {
+            cometChat.logout(new Callbacks() {
+                @Override
+                public void successCallback(JSONObject response) {
+                    Toast.makeText(HomeScreenActivity.this, "Logged out", Toast.LENGTH_LONG).show();
+                    SharedPreferences preferences = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.clear();
+                    editor.apply();
+                    finish();
+                    Intent i = new Intent(HomeScreenActivity.this, LandingActivity.class);
+                    startActivity(i);
+                }
+
+                @Override
+                public void failCallback(JSONObject response) {
+                    Toast.makeText(HomeScreenActivity.this, "Failed to Logged out", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
             if(loggedIn){
                 mCurrentFragment = LoggedInFragment.newInstance();
                 replaceFragment(mCurrentFragment);
@@ -162,31 +244,6 @@ public class HomeScreenActivity extends AppCompatActivity
                 mCurrentFragment = RegistrationFragment.newInstance();
                 replaceFragment(mCurrentFragment);
             }
-
-        } else if (id == R.id.nav_app_help) {
-
-        } else if (id == R.id.nav_privacy_policy) {
-
-        } else if (id == R.id.nav_support_us) {
-
-        }else if(id == R.id.nav_logout  ){
-            cometChat.logout(new Callbacks() {
-                @Override
-                public void successCallback(JSONObject response) {
-                    Toast.makeText(HomeScreenActivity.this, "Logged out", Toast.LENGTH_LONG).show();
-                    SharedPreferences preferences = getSharedPreferences("MyData",Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.clear();
-                    editor.apply();
-                    finish();
-                    Intent i = new Intent(HomeScreenActivity.this, LandingActivity.class);
-                    startActivity(i);
-                }
-                @Override
-                public void failCallback(JSONObject response) {
-                    Toast.makeText(HomeScreenActivity.this, "Failed to Logged out", Toast.LENGTH_LONG).show();
-                }
-            });
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -194,8 +251,8 @@ public class HomeScreenActivity extends AppCompatActivity
         return true;
     }
 
-    private void replaceFragment(Fragment fragment){
-        if(fragment != null){
+    private void replaceFragment(Fragment fragment) {
+        if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.fragment_container, fragment).addToBackStack(null);

@@ -37,6 +37,15 @@
     <string name="policy_accept">I Accept</string>
     <string name="policy_decline">I Decline</string>
 
+    <string name="user_profile">My Profile</string>
+    <string name="privacy_content">Privacy Policy</string>
+    <string name="donate_us">Donate HelpDesk</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="report_bug">Report A Bug</string>
+    <string name="share_app">Share App</string>
+    <string name="app_help">App Help</string>
+    <string name="logout">Logout</string>
+
     <string name="cat_prompt">Choose a category</string>
     <string-array name="categories_array">
         <item name="">Choose a category</item>
