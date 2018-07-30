@@ -48,13 +48,14 @@ public class RegistrationFragment extends Fragment {
     private String role = "customer";
     private Context context;
 
-    private Button btnLaunchChat;
-    private EditText textUserName, textFullName, textEmail, textPhone;
+    private Button btnRegisterLaunchChat, btnLoginLaunchChat;
+    private EditText textUserName, textFullName, textEmail, textPhone, textUserName1;
     private ProgressBar pbLoading;
 
     private TextView mTextView;
 
     private RequestQueue queue;
+    private RequestQueue queue1;
 
     Fragment mCurrentFragment;
     
@@ -73,10 +74,11 @@ public class RegistrationFragment extends Fragment {
         View view = inflater.inflate(R.layout.registration_layout, container, false);
         cometChat = CometChat.getInstance(getActivity());
         pbLoading = view.findViewById(R.id.pb_loading);
-        btnLaunchChat = view.findViewById(R.id.btnRegisterAndLaunch);
-        mTextView = (TextView) view.findViewById(R.id.wordpressResponse);
+        btnRegisterLaunchChat = view.findViewById(R.id.btnRegisterAndLaunch);
+        btnLoginLaunchChat = view.findViewById(R.id.btnLoginLaunch);
+        //mTextView = (TextView) view.findViewById(R.id.wordpressResponse);
 
-        btnLaunchChat.setOnClickListener(new View.OnClickListener() {
+        btnRegisterLaunchChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 createUserAndLogin();
@@ -92,7 +94,17 @@ public class RegistrationFragment extends Fragment {
                 // Created SharedPreferences
             }
         });
+
+        btnLoginLaunchChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginIfRegisteredInWordPress();
+            }
+        });
+
+
         textUserName = view.findViewById(R.id.user_name);
+        textUserName1 = view.findViewById(R.id.user_name_1);
         textFullName = view.findViewById(R.id.user_full_name);
         textEmail = view.findViewById(R.id.user_email);
         textPhone = view.findViewById(R.id.user_phone);
@@ -205,6 +217,10 @@ public class RegistrationFragment extends Fragment {
                                         public void onResponse(JSONObject userResponse) {
                                             try{
                                                 String res = userResponse.getString("status");
+                                                String wp_user_id = userResponse.getString("user_id");SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyData", Context.MODE_PRIVATE);
+                                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                editor.putString("wp_user_id",textUserName.getText().toString());
+                                                editor.apply();
                                                 Log.d("Wordpress Response", userResponse.toString());
                                             }
                                             catch(JSONException f) {
@@ -240,6 +256,85 @@ public class RegistrationFragment extends Fragment {
         queue.add(getNounce);
 
         // Register Data in Wordpress
+    }
+
+    private void LoginIfRegisteredInWordPress(){
+
+        Toast.makeText(getActivity(), "Login If Regsiterred ", Toast.LENGTH_LONG).show();
+
+        // Register Data in Wordpress
+
+        // Instantiate the RequestQueue.
+        queue1 = Volley.newRequestQueue(getActivity());
+        String checkUser = "http://www.helpdessk.com/wp-json/custom-plugin/login?username=" + textUserName1.getText().toString() + "&password=Password";
+
+        JsonObjectRequest checkWPUser = new JsonObjectRequest(Request.Method.GET, checkUser, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject userResponse) {
+                        try{
+                            Toast.makeText(getActivity(), "API  If Regsiterred ", Toast.LENGTH_LONG).show();
+                            JSONObject userResponseData = userResponse.getJSONObject("data");
+                            String user_login_id = userResponseData.getString("user_login");
+                            String user_full_name = userResponseData.getString("display_name");
+                            String user_email_id = userResponseData.getString("user_email");
+//                            String user_phone = userResponseData.getString("user_phone");
+
+                            if(user_login_id.toLowerCase().equals(textUserName1.getText().toString().toLowerCase())){
+
+                                // Created SharedPreferences
+                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyData", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("username",user_login_id);
+                                editor.putString("fullname",user_full_name);
+                                editor.putString("email",user_email_id);
+                                editor.putString("phone","Set it");
+                                editor.putBoolean("loggedIn",true);
+                                editor.apply();
+                                // Created SharedPreferences
+
+                                // Login or launch chat
+                                cometChat.loginWithUID(getActivity(), textUserName1.getText().toString(), new Callbacks() {
+                                    @Override
+                                    public void successCallback(JSONObject jsonObject) {
+                                        Log.d(TAG, "Login Success : " + jsonObject.toString());
+                                        Toast.makeText(getActivity(), jsonObject.toString(), Toast.LENGTH_LONG).show();
+                                        //btnLaunchChat.setEnabled(true);
+                                        showLoading(false);
+                                        LoggedInFragment loggedInFragment = new LoggedInFragment();
+                                        FragmentManager manager = getFragmentManager();
+                                        manager.beginTransaction()
+                                                .replace(R.id.fragment_container, loggedInFragment,loggedInFragment.getTag())
+                                                .addToBackStack(null).commit();
+//                            launchChat();
+                                    }
+
+                                    @Override
+                                    public void failCallback(JSONObject jsonObject) {
+                                        Log.d(TAG, "Login Fail : " + jsonObject.toString());
+                                        Toast.makeText(getActivity(), jsonObject.toString(), Toast.LENGTH_LONG).show();
+                                        showLoading(false);
+                                    }
+                                });
+                            }
+
+                            Log.d("Wordpress Response", userResponse.toString());
+                        }
+                        catch(JSONException f) {
+                            f.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("WordPess Error.Response", error.toString());
+                    }
+                });
+        Log.d("Parsed", checkUser);
+        queue1.add(checkWPUser);
+
     }
 
     private void showLoading(boolean show) {

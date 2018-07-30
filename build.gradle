@@ -30,6 +30,7 @@ allprojects {
             maven{
                 url 'https://dl.bintray.com/cometchat/CometChat'
             }
+            maven { url "https://jitpack.io" }
         }
     }
 }

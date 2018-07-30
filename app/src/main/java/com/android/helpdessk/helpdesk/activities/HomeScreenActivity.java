@@ -190,6 +190,7 @@ public class HomeScreenActivity extends AppCompatActivity
         String phone = sharedPreferences.getString("phone", "");
         Boolean loggedIn = sharedPreferences.getBoolean("loggedIn", false);
 
+
         if (id == R.id.nav_user_register) {
             mCurrentFragment = RegistrationFragment.newInstance();
             replaceFragment(mCurrentFragment);
@@ -212,7 +213,14 @@ public class HomeScreenActivity extends AppCompatActivity
         } else if (id == R.id.nav_report) {
             mCurrentFragment = ReportABugFragment.newInstance();
             replaceFragment(mCurrentFragment);
-        } else if (id == R.id.nav_app_help) {
+        } else if (id == R.id.nav_share_app) {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+            i.putExtra(Intent.EXTRA_TEXT, "The Message");
+            startActivity(Intent.createChooser(i,
+                    "Share Using"));
+        }else if (id == R.id.nav_app_help) {
             mCurrentFragment = AppHelpFragment.newInstance();
             replaceFragment(mCurrentFragment);
 

@@ -6,12 +6,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_user_register"
-            android:icon="@drawable/baseline_person_pin_black_18dp"
+            android:icon="@drawable/baseline_chat_black_18dp"
             android:textSize="16sp"
             android:title="Register" />
         <item
             android:id="@+id/nav_user_helpdesk"
-            android:icon="@drawable/baseline_person_pin_black_18dp"
+            android:icon="@drawable/baseline_supervisor_account_black_18dp"
             android:textSize="16sp"
             android:title="HelpDesk" />
         <item
@@ -40,8 +40,6 @@
         <item
             android:id="@+id/nav_share_app"
             android:icon="@drawable/baseline_share_black_18dp"
-            app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
-            app:showAsAction="ifRoom"
             android:textSize="16sp"
             android:title="@string/share_app" />
         <item

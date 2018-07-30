@@ -9,6 +9,8 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,18 +30,15 @@ public class PrivacyPolicyPage extends AppCompatActivity {
     private RequestQueue privacyQueue;
     private TextView privacyPolicyHtml;
     private Button acceptButton, notAcceptButton;
+    private LinearLayout btnAcceptDeclineContainer;
+    private RelativeLayout loadingPanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.privacy_page);
-        //Get a reference to your WebView//
-//        WebView webView = (WebView) findViewById(R.id.privacy_webview);
 
-        //Specify the URL you want to display//
-//        webView.loadUrl("https://helpdessk.com/privacy-policy/");
-//        webView.getSettings().setJavaScriptEnabled(true);
-//        webView.setWebViewClient(new WebViewClient());
+        loadingPanel = findViewById(R.id.loadingPanel);
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
         String user = sharedPreferences.getString("username","");
@@ -47,14 +46,12 @@ public class PrivacyPolicyPage extends AppCompatActivity {
         String email = sharedPreferences.getString("email","");
         String phone = sharedPreferences.getString("phone","");
 
-        Toast.makeText(PrivacyPolicyPage.this, user+" "+fullname+" "+email+" "+phone , Toast.LENGTH_LONG).show();
+//        Toast.makeText(PrivacyPolicyPage.this, user+" "+fullname+" "+email+" "+phone , Toast.LENGTH_LONG).show();
 
         privacyPolicyHtml = findViewById(R.id.privacy_policy_html);
-
         privayPolicyContentWordpress();
 
         acceptButton = findViewById(R.id.accept_button);
-        //acceptButton.setEnabled(false);
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +65,6 @@ public class PrivacyPolicyPage extends AppCompatActivity {
         });
 
         notAcceptButton = findViewById(R.id.not_accept);
-        //notAcceptButton.setEnabled(false);
         notAcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,30 +76,28 @@ public class PrivacyPolicyPage extends AppCompatActivity {
 
     private void privayPolicyContentWordpress(){
 
-        Toast.makeText(PrivacyPolicyPage.this,"Privacy policy call",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(PrivacyPolicyPage.this,"Privacy policy call",Toast.LENGTH_SHORT).show();
         // Get data for privacy policy
 
         // Instantiate the RequestQueue.
         privacyQueue = Volley.newRequestQueue(PrivacyPolicyPage.this);
-        String getprivacyPplicyurl ="https://helpdessk.com/wp-json/wp/v2/pages/4562";
+        String getPrivacyPolicyURL ="https://helpdessk.com/wp-json/wp/v2/pages/4562";
 
         // prepare the Request
-        JsonObjectRequest getPrivacyContent = new JsonObjectRequest(Request.Method.GET, getprivacyPplicyurl, null,
+        JsonObjectRequest getPrivacyContent = new JsonObjectRequest(Request.Method.GET, getPrivacyPolicyURL, null,
                 new Response.Listener<JSONObject>()
                 {
                     @Override
                     public void onResponse(JSONObject response) {
                         // display response
                         try{
-                            JSONObject privacycontentParent = response.getJSONObject("content");
-                            String privacyHtml = privacycontentParent.getString("rendered");
-
+                            JSONObject privacyContentParent = response.getJSONObject("content");
+                            String privacyHtml = privacyContentParent.getString("rendered");
                             privacyPolicyHtml.setText(Html.fromHtml(privacyHtml));
                             privacyPolicyHtml.setMovementMethod(new ScrollingMovementMethod());
-                            //acceptButton.setEnabled(true);
-                            //notAcceptButton.setEnabled(true);
-
-                            Log.d("WordPr Success Response", privacyHtml);
+                            btnAcceptDeclineContainer = findViewById(R.id.btnAcceptDeclineContainer);
+                            btnAcceptDeclineContainer.setVisibility(View.VISIBLE);
+                            loadingPanel.setVisibility(View.GONE);
                         }
                         catch(JSONException e) {
                             e.printStackTrace();
